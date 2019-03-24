@@ -1,0 +1,15 @@
+.navbar {
+  background: rgb(37, 50, 56) !important;
+}
+
+.search-bar-container {
+  position: "relative";
+  display: inline-flex;
+  vertical-align: center;
+  margin-left: 100px;
+  width: 300px;
+}
+
+.search-bar {
+  color: white !important;
+}
