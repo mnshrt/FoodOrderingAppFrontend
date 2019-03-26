@@ -37,3 +37,19 @@
   margin: 0 auto !important;
   margin-top: 10px;
 }
+
+.btn-profile {
+  text-transform: none !important;
+  color: rgb(186, 186, 185) !important;
+}
+
+.menu-item-container {
+  /* background: rgb(223, 223, 223) !important; */
+  margin: 5px;
+  outline-width: 0;
+}
+
+.menu-item {
+  font-size: 15px !important;
+  margin: 0 !important;
+}
