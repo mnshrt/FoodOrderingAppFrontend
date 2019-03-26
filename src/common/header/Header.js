@@ -38,8 +38,12 @@ const styles = {
 
 class Header extends Component {
   state = {
+    username: "UpGrad",
     modalOpen: false,
-    value: 0
+    value: 0,
+    isLoggedIn: false,
+    renderProfileMenu: false,
+    anchorEl: null
   };
 
   handleOpenModal = () => {
@@ -54,9 +58,25 @@ class Header extends Component {
     this.setState({ value });
   };
 
+  handleLogin = () => {
+    this.setState({ isLoggedIn: true });
+    this.handleCloseModal();
+  };
+
+  handleOpenProfileMenu = event => {
+    this.setState({ renderProfileMenu: true });
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleCloseProfileMenu = () => {
+    this.setState({ renderProfileMenu: false });
+    this.setState({ anchorEl: null });
+  };
+
   render() {
     const { classes } = this.props;
     const { value } = this.state;
+    const open = Boolean(this.state.anchorEl);
     return (
       <div className="header-container">
         <AppBar className="navbar" position="static">
@@ -88,10 +108,55 @@ class Header extends Component {
                 </div>
               </Grid>
               <Grid item>
-                <Button variant="contained" onClick={this.handleOpenModal}>
-                  <AccountCircle style={{ marginRight: "5px" }} />
-                  Login
-                </Button>
+                {!this.state.isLoggedIn ? (
+                  <div>
+                    <Button variant="contained" onClick={this.handleOpenModal}>
+                      <AccountCircle style={{ marginRight: "5px" }} />
+                      Login
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Button
+                      className="btn-profile"
+                      onClick={this.handleOpenProfileMenu}
+                    >
+                      <AccountCircle
+                        style={{ marginRight: "5px" }}
+                        className="btn-profile"
+                      />
+                      UpGrad
+                    </Button>
+                    <Menu
+                      className="my-menu"
+                      id="menu-appbar"
+                      anchorEl={this.state.anchorEl}
+                      children="menu-list"
+                      getContentAnchorEl={null}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center"
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center"
+                      }}
+                      open={open}
+                      onClose={this.handleCloseProfileMenu}
+                    >
+                      {this.state.renderProfileMenu ? (
+                        <div className="menu-item-container">
+                          <MenuList id="menu-list">
+                            <MenuItem className="menu-item">
+                              My Profile
+                            </MenuItem>
+                            <MenuItem className="menu-item">Logout</MenuItem>
+                          </MenuList>
+                        </div>
+                      ) : null}
+                    </Menu>
+                  </div>
+                )}
               </Grid>
             </Grid>
           </Toolbar>
@@ -103,7 +168,7 @@ class Header extends Component {
           open={this.state.modalOpen}
           onClose={this.handleCloseModal}
         >
-          <div class="modal-container">
+          <div className="modal-container">
             <Tabs value={value} onChange={this.handleChange}>
               <Tab label="Login" />
               <Tab label="Signup" />
@@ -123,6 +188,7 @@ class Header extends Component {
                     color="primary"
                     className="btn-login"
                     style={{ marginTop: "20%" }}
+                    onClick={this.handleLogin}
                   >
                     Login
                   </Button>
