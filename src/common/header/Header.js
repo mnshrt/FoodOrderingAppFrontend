@@ -63,6 +63,11 @@ class Header extends Component {
     this.handleCloseModal();
   };
 
+  handleLogout = () => {
+    this.setState({ isLoggedIn: false });
+    this.handleCloseProfileMenu();
+  };
+
   handleOpenProfileMenu = event => {
     this.setState({ renderProfileMenu: true });
     this.setState({ anchorEl: event.currentTarget });
@@ -150,7 +155,12 @@ class Header extends Component {
                             <MenuItem className="menu-item">
                               My Profile
                             </MenuItem>
-                            <MenuItem className="menu-item">Logout</MenuItem>
+                            <MenuItem
+                              className="menu-item"
+                              onClick={this.handleLogout}
+                            >
+                              Logout
+                            </MenuItem>
                           </MenuList>
                         </div>
                       ) : null}
