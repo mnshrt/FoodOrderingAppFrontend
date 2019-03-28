@@ -7,6 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import OrderSnackbar from "../OrderSnackbar/OrderSnackbar";
 
 const styles = {
   card: {
@@ -69,16 +70,7 @@ class PlaceOrderCard extends Component {
             <span>₹280</span>
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ margin: "10px" }}
-            fullWidth={true}
-          >
-            Place Order
-          </Button>
-        </CardActions>
+        <OrderSnackbar />
       </Card>
     );
   }
