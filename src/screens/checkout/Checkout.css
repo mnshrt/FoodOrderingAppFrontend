@@ -1,6 +1,6 @@
 .order-summary {
-  position: relative !important;
-  left: 85% !important;
+  position: fixed !important;
+  left: 75% !important;
   width: 10% !important;
   margin-top: 3% !important;
 }

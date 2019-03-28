@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Header from "../../common/header/Header";
-import AddressCard from "./AddressCard";
-import AddressTabs from "./AddressTabs";
+import AddressCard from "./components/AddressCard/AddressCard";
+import AddressTabs from "./components/AddressTabs/AddressTabs";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -15,15 +15,15 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import PlaceOrderCard from "./PlaceOrderCard";
+import PlaceOrderCard from "./components/PlaceOrderCard/PlaceOrderCard";
+import Payment from "./components/Payment/Payment";
 import "./Checkout.css";
 
 const styles = theme => ({
   root: {
-    width: "80%",
+    width: "74%",
     marginTop: "5px",
-    position: "relative",
-    right: "10%"
+    position: "fixed"
   },
   summary: {
     width: "20%"
@@ -49,7 +49,7 @@ const getStepContent = step => {
     case 0:
       return <AddressTabs />;
     case 1:
-      return "Payment";
+      return <Payment />;
     default:
       return "Uknown step";
   }
@@ -122,11 +122,14 @@ class Checkout extends Component {
             </Stepper>
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.resetContainer}>
-                <Typography>
-                  All steps completed - you&apos;re finished
+                <Typography
+                  color="textPrimary"
+                  style={{ fontSize: "20px", fontWeight: "500" }}
+                >
+                  View the summary &amp; place your order now!
                 </Typography>
                 <Button onClick={this.handleReset} className={classes.button}>
-                  Reset
+                  Change
                 </Button>
               </Paper>
             )}

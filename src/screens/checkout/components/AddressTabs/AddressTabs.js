@@ -6,7 +6,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
-import AddressCard from "./AddressCard";
+import AddressCard from "../AddressCard/AddressCard";
+import AddressForm from "../AddressForm/AddressForm";
 import "./AddressTabs.css";
 
 const TabContainer = props => {
@@ -18,6 +19,10 @@ const TabContainer = props => {
       {props.children}
     </Typography>
   );
+};
+
+const TabContainer2 = props => {
+  return <Typography component="div">{props.children}</Typography>;
 };
 
 TabContainer.propTypes = {
@@ -69,7 +74,11 @@ class AddressTabs extends Component {
             </TabContainer>
           </div>
         )}
-        {value === 1 && <TabContainer>Item Two</TabContainer>}
+        {value === 1 && (
+          <div>
+            <AddressForm />
+          </div>
+        )}
       </div>
     );
   }
