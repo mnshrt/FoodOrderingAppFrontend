@@ -3,10 +3,27 @@ import React, { Component } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
+import Select from "@material-ui/core/Select";
 import "./AddressForm.css";
+import StateSelect from "./StateSelect";
+import InputLabel from "@material-ui/core/InputLabel";
 
 // AddressForm component
 class AddressForm extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  state = {
+    stateName: "",
+    name: "hai",
+    labelWidth: 0
+  };
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
   render() {
     return (
       <div className="address-form-container">
@@ -31,12 +48,20 @@ class AddressForm extends Component {
             id="passInput"
             style={{ marginTop: "25px" }}
           />
-          <Input
-            fullWidth={true}
-            placeholder="State *"
-            id="passInput"
-            style={{ marginTop: "25px" }}
-          />
+          <FormControl>
+            <InputLabel
+              htmlFor="states"
+              style={{ fontWeight: "lighter", color: "grey" }}
+            >
+              State *
+            </InputLabel>
+            <StateSelect
+              stateNames={this.props.stateNamesList}
+              id="states"
+              name="states"
+              input={<Input id="states" />}
+            />
+          </FormControl>
           <Input
             fullWidth={true}
             placeholder="Pincode *"
@@ -46,7 +71,7 @@ class AddressForm extends Component {
           <Button
             variant="contained"
             color="secondary"
-            style={{ width: "70%", marginBottom: "20px" }}
+            style={{ width: "70%", marginBottom: "25px" }}
           >
             Save Address
           </Button>

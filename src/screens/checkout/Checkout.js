@@ -44,21 +44,26 @@ const getSteps = () => {
   return ["Delivery", "Payment"];
 };
 
-const getStepContent = step => {
-  switch (step) {
-    case 0:
-      return <AddressTabs />;
-    case 1:
-      return <Payment />;
-    default:
-      return "Uknown step";
-  }
-};
+// const getStepContent = step => {
+//   switch (step) {
+//     case 0:
+//       return <AddressTabs />;
+//     case 1:
+//       return <Payment paymentMethodsList={}/>;
+//     default:
+//       return "Uknown step";
+//   }
+// };
 
 // Checkout Component
 class Checkout extends Component {
   state = {
-    activeStep: 0
+    activeStep: 0,
+    payments: [],
+    states: [],
+    addresses: [],
+    accessToken:
+      "eyJraWQiOiIzMzdhMzlmMS1mYmU1LTRkMDQtYjcxZi05OGIxMWJkNzI1MDkiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJhY2VmNWY3Yi1lM2RkLTQwOGUtOGI3My1mY2UzM2M2OWQxMjQiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU1Mzk0NiwiaWF0IjoxNTUzOTE3fQ.Rtps8qPr6tZP9UsigpcKdKN2v-ev02j48r7eVdtBQ-amjvcRQkooBSP9y-PL-0RYBlFz1-dIe9EXz7o9Kslnkw"
   };
 
   handleNext = () => {
@@ -79,6 +84,81 @@ class Checkout extends Component {
     });
   };
 
+  getData = async () => {
+    // Get payment data
+    const api_call = await fetch("http://localhost:8080/api/payment");
+    const data = await api_call.json();
+
+    const paymentMethodList = [];
+
+    data.paymentMethods.forEach(element => {
+      paymentMethodList.push(element.payment_name);
+    });
+
+    this.setState({
+      payments: paymentMethodList
+    });
+
+    // Get state data
+    const states_api_call = await fetch("http://localhost:8080/api/states");
+    const stateData = await states_api_call.json();
+
+    const stateNameList = [];
+
+    stateData.states.forEach(element => {
+      stateNameList.push(element.state_name);
+    });
+
+    this.setState({
+      states: stateNameList
+    });
+
+    // Get address data
+    const addresses_api_call = await fetch(
+      "http://localhost:8080/api/address/customer",
+      {
+        headers: {
+          authorization: "Bearer " + this.state.accessToken,
+          "content-type": "application/json;charset=UTF-8"
+        }
+      }
+    );
+
+    const addressData = await addresses_api_call.json();
+
+    const addressList = [];
+
+    addressData.addresses.forEach(element => {
+      addressList.push(element);
+    });
+
+    this.setState({
+      addresses: addressList
+    });
+
+    console.log(this.state.addresses);
+  };
+
+  componentWillMount() {
+    this.getData();
+  }
+
+  getStepContent = step => {
+    switch (step) {
+      case 0:
+        return (
+          <AddressTabs
+            stateList={this.state.states}
+            address={this.state.addresses}
+          />
+        );
+      case 1:
+        return <Payment paymentMethodsList={this.state.payments} />;
+      default:
+        return "Uknown step";
+    }
+  };
+
   render() {
     const { classes } = this.props;
     const steps = getSteps();
@@ -96,7 +176,7 @@ class Checkout extends Component {
                 <Step key={label}>
                   <StepLabel>{label}</StepLabel>
                   <StepContent>
-                    <Typography>{getStepContent(index)}</Typography>
+                    <Typography>{this.getStepContent(index)}</Typography>
                     <div className={classes.actionsContainer}>
                       <div>
                         <Button

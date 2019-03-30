@@ -23,8 +23,13 @@ const styles = theme => ({
 
 // Payment component
 class Payment extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
-    value: "female"
+    value: "payment",
+    payments: []
   };
 
   handleChange = event => {
@@ -33,37 +38,26 @@ class Payment extends Component {
 
   render() {
     const { classes } = this.props;
+    const paymentMethods = this.props.paymentMethodsList;
+    const radio = <Radio />;
     return (
       <div className={classes.root}>
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Select Mode of Payment</FormLabel>
           <RadioGroup
             aria-label="Gender"
-            name="gender1"
+            name="payments"
             className={classes.group}
             value={this.state.value}
             onChange={this.handleChange}
           >
-            <FormControlLabel
-              value="cod"
-              control={<Radio />}
-              label="Cash on Delivery"
-            />
-            <FormControlLabel
-              value="wallet"
-              control={<Radio />}
-              label="Wallet"
-            />
-            <FormControlLabel
-              value="netbanking"
-              control={<Radio />}
-              label="Net Banking"
-            />
-            <FormControlLabel
-              value="card"
-              control={<Radio />}
-              label="Debit / Credit Card"
-            />
+            {paymentMethods.map(element => (
+              <FormControlLabel
+                value={element}
+                control={radio}
+                label={element}
+              />
+            ))}
           </RadioGroup>
         </FormControl>
       </div>

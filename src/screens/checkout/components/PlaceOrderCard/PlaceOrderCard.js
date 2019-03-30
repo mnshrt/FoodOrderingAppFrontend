@@ -50,7 +50,7 @@ class PlaceOrderCard extends Component {
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
             <i
-              class="far fa-stop-circle"
+              className="far fa-stop-circle"
               style={{ color: "red", marginRight: "10px" }}
             />
             <span style={{ marginRight: "5px" }}>Hakka Noodles</span>{" "}
@@ -58,7 +58,7 @@ class PlaceOrderCard extends Component {
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
             <i
-              class="far fa-stop-circle"
+              className="far fa-stop-circle"
               style={{ color: "green", marginRight: "10px" }}
             />
             <span style={{ marginRight: "78px" }}>Tea</span>{" "}

@@ -34,6 +34,10 @@ const styles = theme => ({
 
 // AddressTabs component
 class AddressTabs extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     value: 0
   };
@@ -45,7 +49,8 @@ class AddressTabs extends Component {
   render() {
     const { classes } = this.props;
     const { value } = this.state;
-
+    const states = this.props.stateList;
+    const addresses = this.props.address;
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -56,23 +61,17 @@ class AddressTabs extends Component {
         </AppBar>
         {value === 0 && (
           <div>
-            <TabContainer className="tab-container">
-              {" "}
-              <AddressCard />
-            </TabContainer>
-            <TabContainer className="tab-container">
-              {" "}
-              <AddressCard />
-            </TabContainer>
-            <TabContainer className="tab-container">
-              {" "}
-              <AddressCard />
-            </TabContainer>
+            {addresses.map(element => (
+              <TabContainer className="tab-container">
+                {" "}
+                <AddressCard addressList={element} />
+              </TabContainer>
+            ))}
           </div>
         )}
         {value === 1 && (
           <div>
-            <AddressForm />
+            <AddressForm stateNamesList={states} />
           </div>
         )}
       </div>

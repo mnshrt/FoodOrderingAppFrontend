@@ -43,6 +43,10 @@ const styles = {
 
 // AddressCard component
 class AddressCard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     active: false
   };
@@ -56,6 +60,7 @@ class AddressCard extends Component {
   render() {
     const { classes } = this.props;
     const bull = <span className={classes.bullet}>•</span>;
+    const addresses = this.props.addressList;
     return (
       <Card className={this.state.active ? classes.card : classes.cardDisabled}>
         <ButtonBase
@@ -68,19 +73,19 @@ class AddressCard extends Component {
         >
           <CardContent>
             <Typography component="p" style={{ marginBottom: "5px" }}>
-              Nishuvi, Ground Floor, 75
+              {addresses.flat_building_name}
             </Typography>
             <Typography component="p" style={{ marginBottom: "5px" }}>
-              Dr. Annie Besant Rd, Worli
+              {addresses.locality}
             </Typography>
             <Typography component="p" style={{ marginBottom: "5px" }}>
-              Mumbai
+              {addresses.city}
             </Typography>
             <Typography component="p" style={{ marginBottom: "5px" }}>
-              Maharashta
+              {addresses.state.state_name}
             </Typography>
             <Typography component="p" style={{ marginBottom: "5px" }}>
-              400018
+              {addresses.pincode}
             </Typography>
           </CardContent>
           <CardActions>
