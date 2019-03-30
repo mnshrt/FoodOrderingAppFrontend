@@ -39,7 +39,8 @@ class RestaurantDetails extends React.Component{
                     </div>
                     <br />
                     <div className="flex-countsContainer">                     
-                        <div className="countElements"><Typography><span className="bold"><Icon>star_rate</Icon>{restaurantDetails.customer_rating}</span><br/>
+                        <div className="countElements"><Typography><span className="bold"><i className="fa fa-star" aria-hidden="true"></i>
+{restaurantDetails.customer_rating}</span><br/>
                         <span className="subHeaders">AVERAGE RATING BY<br/>
                          {restaurantDetails.number_customers_rated} CUSTOMERS</span></Typography></div> 
 
