@@ -34,6 +34,7 @@ class Payment extends Component {
 
   handleChange = event => {
     this.setState({ value: event.target.value });
+    this.props.action(event.target.value);
   };
 
   render() {
@@ -53,9 +54,9 @@ class Payment extends Component {
           >
             {paymentMethods.map(element => (
               <FormControlLabel
-                value={element}
+                value={element[1]}
                 control={radio}
-                label={element}
+                label={element[0]}
               />
             ))}
           </RadioGroup>

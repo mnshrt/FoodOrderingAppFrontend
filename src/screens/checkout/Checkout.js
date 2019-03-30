@@ -56,6 +56,7 @@ class Checkout extends Component {
     addresses: [],
     addressFormData: "",
     paymentData: "",
+    addressId: "",
     accessToken:
       "eyJraWQiOiJjNDRmMGM1Yy1iODRjLTQ0MmEtOGI5Yy05NGYyMTRjZjVkNjciLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJhY2VmNWY3Yi1lM2RkLTQwOGUtOGI3My1mY2UzM2M2OWQxMjQiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU1Mzk3NSwiaWF0IjoxNTUzOTQ2fQ.7EjGhYYeetJ9P2hq3SWGl6TSPbCZOYbmfAWQXDs3a7nCmxnFHaivJ05kZ-Rgwc6DPJ_S8St0-LLN1_cMF0QVxg"
   };
@@ -85,8 +86,10 @@ class Checkout extends Component {
 
       const paymentMethodList = [];
 
+      console.log(data);
+
       data.paymentMethods.forEach(element => {
-        paymentMethodList.push(element.payment_name);
+        paymentMethodList.push([element.payment_name, element.id]);
       });
 
       this.setState({
@@ -129,6 +132,8 @@ class Checkout extends Component {
       );
 
       const addressData = await addresses_api_call.json();
+
+      console.log(addressData);
 
       const addressList = [];
 
@@ -177,6 +182,14 @@ class Checkout extends Component {
     // call post method method to place order here
   };
 
+  handleAddressSelector = async data => {
+    const myData = await data;
+    this.setState({
+      addressId: data
+    });
+    console.log(this.state.addressId);
+  };
+
   // Method to make Http POST requests asynchronously
   postData = async data => {
     const postAddress_api_call = await fetch(
@@ -204,10 +217,16 @@ class Checkout extends Component {
             stateList={this.state.states}
             address={this.state.addresses}
             action={this.handleAddressForm.bind(this)}
+            addressAction={this.handleAddressSelector.bind(this)}
           />
         );
       case 1:
-        return <Payment paymentMethodsList={this.state.payments} />;
+        return (
+          <Payment
+            paymentMethodsList={this.state.payments}
+            action={this.handlePaymentMethodSelector.bind(this)}
+          />
+        );
       default:
         return "Uknown step";
     }

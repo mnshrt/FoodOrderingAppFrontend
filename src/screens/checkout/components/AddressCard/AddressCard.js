@@ -51,10 +51,11 @@ class AddressCard extends Component {
     active: false
   };
 
-  handleCardClick = () => {
+  handleCardClick = event => {
     this.setState({
       active: true
     });
+    this.props.addressAction(this.props.addressList.id);
   };
 
   render() {
