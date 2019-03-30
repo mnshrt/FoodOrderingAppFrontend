@@ -64,7 +64,10 @@ class AddressTabs extends Component {
             {addresses.map(element => (
               <TabContainer className="tab-container">
                 {" "}
-                <AddressCard addressList={element} />
+                <AddressCard
+                  addressList={element}
+                  addressAction={this.props.addressAction}
+                />
               </TabContainer>
             ))}
           </div>
