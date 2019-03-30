@@ -9,7 +9,9 @@ class Details extends React.Component{
         super();
         this.state={
             restaurantDetails:{},
-            restaurantIdDetails:{}
+            restaurantIdDetails:{},
+            totalSum:0,
+            itemOnCart
         }
     }
     componentWillMount(){
