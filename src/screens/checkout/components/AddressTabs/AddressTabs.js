@@ -71,7 +71,7 @@ class AddressTabs extends Component {
         )}
         {value === 1 && (
           <div>
-            <AddressForm stateNamesList={states} />
+            <AddressForm stateNamesList={states} action={this.props.action} />
           </div>
         )}
       </div>

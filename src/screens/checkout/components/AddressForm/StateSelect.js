@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
 
 const styles = theme => ({
   root: {
@@ -33,6 +32,7 @@ class StateSelect extends Component {
   };
 
   handleChange = name => event => {
+    this.props.selectStateCallback(event.target.value);
     this.setState({ [name]: event.target.value });
   };
 
@@ -49,9 +49,10 @@ class StateSelect extends Component {
             id: "states"
           }}
           placeholder="State*"
+          {...this.props}
         >
           {stateNames.map(element => (
-            <MenuItem value={element}>{element}</MenuItem>
+            <MenuItem value={element[1]}>{element[0]}</MenuItem>
           ))}
         </Select>
       </div>

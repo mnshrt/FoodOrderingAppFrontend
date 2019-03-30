@@ -44,26 +44,20 @@ const getSteps = () => {
   return ["Delivery", "Payment"];
 };
 
-// const getStepContent = step => {
-//   switch (step) {
-//     case 0:
-//       return <AddressTabs />;
-//     case 1:
-//       return <Payment paymentMethodsList={}/>;
-//     default:
-//       return "Uknown step";
-//   }
-// };
-
 // Checkout Component
 class Checkout extends Component {
+  constructor(props) {
+    super(props);
+  }
   state = {
     activeStep: 0,
     payments: [],
     states: [],
     addresses: [],
+    addressFormData: "",
+    paymentData: "",
     accessToken:
-      "eyJraWQiOiIzMzdhMzlmMS1mYmU1LTRkMDQtYjcxZi05OGIxMWJkNzI1MDkiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJhY2VmNWY3Yi1lM2RkLTQwOGUtOGI3My1mY2UzM2M2OWQxMjQiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU1Mzk0NiwiaWF0IjoxNTUzOTE3fQ.Rtps8qPr6tZP9UsigpcKdKN2v-ev02j48r7eVdtBQ-amjvcRQkooBSP9y-PL-0RYBlFz1-dIe9EXz7o9Kslnkw"
+      "eyJraWQiOiJjNDRmMGM1Yy1iODRjLTQ0MmEtOGI5Yy05NGYyMTRjZjVkNjciLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJhY2VmNWY3Yi1lM2RkLTQwOGUtOGI3My1mY2UzM2M2OWQxMjQiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU1Mzk3NSwiaWF0IjoxNTUzOTQ2fQ.7EjGhYYeetJ9P2hq3SWGl6TSPbCZOYbmfAWQXDs3a7nCmxnFHaivJ05kZ-Rgwc6DPJ_S8St0-LLN1_cMF0QVxg"
   };
 
   handleNext = () => {
@@ -85,58 +79,117 @@ class Checkout extends Component {
   };
 
   getData = async () => {
-    // Get payment data
-    const api_call = await fetch("http://localhost:8080/api/payment");
-    const data = await api_call.json();
+    const getPaymentData = async () => {
+      const api_call = await fetch("http://localhost:8080/api/payment");
+      const data = await api_call.json();
 
-    const paymentMethodList = [];
+      const paymentMethodList = [];
 
-    data.paymentMethods.forEach(element => {
-      paymentMethodList.push(element.payment_name);
-    });
+      data.paymentMethods.forEach(element => {
+        paymentMethodList.push(element.payment_name);
+      });
 
-    this.setState({
-      payments: paymentMethodList
-    });
+      this.setState({
+        payments: paymentMethodList
+      });
+    };
 
-    // Get state data
-    const states_api_call = await fetch("http://localhost:8080/api/states");
-    const stateData = await states_api_call.json();
+    const getStateData = async () => {
+      // Get state data
+      const states_api_call = await fetch("http://localhost:8080/api/states");
+      console.log("started state data");
+      const stateData = await states_api_call.json();
+      console.log("received state data");
 
-    const stateNameList = [];
+      console.log(stateData);
 
-    stateData.states.forEach(element => {
-      stateNameList.push(element.state_name);
-    });
+      const stateNameList = [];
 
-    this.setState({
-      states: stateNameList
-    });
+      stateData.states.forEach(element => {
+        stateNameList.push([element.state_name, element.id]);
+      });
 
-    // Get address data
-    const addresses_api_call = await fetch(
+      console.log(stateNameList);
+
+      this.setState({
+        states: stateNameList
+      });
+    };
+
+    const getAddressData = async () => {
+      // Get address data
+      const addresses_api_call = await fetch(
+        "http://localhost:8080/api/address/customer",
+        {
+          headers: {
+            authorization: "Bearer " + this.state.accessToken,
+            "content-type": "application/json;charset=UTF-8"
+          }
+        }
+      );
+
+      const addressData = await addresses_api_call.json();
+
+      const addressList = [];
+
+      addressData.addresses.forEach(element => {
+        addressList.push(element);
+      });
+
+      this.setState({
+        addresses: addressList
+      });
+
+      console.log(this.state.addresses);
+    };
+
+    const handleRejection = func => {
+      return func.catch(err => ({ error: err }));
+    };
+
+    const callAllGetRequests = async () => {
+      await Promise.all(
+        [getAddressData(), getStateData(), getPaymentData()].map(
+          handleRejection
+        )
+      );
+    };
+
+    callAllGetRequests();
+  };
+
+  handleAddressForm = async data => {
+    const myData = await data;
+    if (myData) {
+      this.setState({
+        addressFormData: data
+      });
+    }
+    this.postData(myData);
+  };
+
+  handlePaymentMethodSelector = async data => {
+    const myData = await data;
+    if (myData) {
+      this.setState({ paymentData: myData });
+    }
+    console.log(myData);
+    // call post method method to place order here
+  };
+
+  // Method to make Http POST requests asynchronously
+  postData = async data => {
+    const postAddress_api_call = await fetch(
       "http://localhost:8080/api/address/customer",
       {
+        method: "POST",
         headers: {
           authorization: "Bearer " + this.state.accessToken,
           "content-type": "application/json;charset=UTF-8"
-        }
+        },
+        body: JSON.stringify(data)
       }
-    );
-
-    const addressData = await addresses_api_call.json();
-
-    const addressList = [];
-
-    addressData.addresses.forEach(element => {
-      addressList.push(element);
-    });
-
-    this.setState({
-      addresses: addressList
-    });
-
-    console.log(this.state.addresses);
+    ).then(response => console.log(response));
   };
 
   componentWillMount() {
@@ -150,6 +203,7 @@ class Checkout extends Component {
           <AddressTabs
             stateList={this.state.states}
             address={this.state.addresses}
+            action={this.handleAddressForm.bind(this)}
           />
         );
       case 1:
