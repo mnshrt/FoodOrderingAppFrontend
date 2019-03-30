@@ -6,10 +6,10 @@ import CategoryGridList from "./components/categoryGridList/CategoryGridList"
 import MyCartComponent from './components/myCartComponent/MyCartComponent';
 import "./Details.css";
 class Details extends React.Component{
-
+//get the clicked restaurant object from Home.js in props
     constructor(){
         super();
-        //making the method a property of the class
+       
         this.addItem= this.addItem.bind(this);
         this.state={
             restaurantDetails:{},
@@ -20,19 +20,22 @@ class Details extends React.Component{
         }
     }
     componentWillMount(){
-        this.setState({restaurantDetails:restaurantDetailsData,
-        restaurantIdDetails:restaurantData});
+        this.getRestaurantIdData()
     }
-    getMediaData = async () => {
+    //from the restaurant object get the id to fetch Restaurant object with category list
+     // use this url for home.js
+
+    getRestaurantIdData = async () => {
         const api_call_general= await fetch(
-            'http://localhost:8080/api/'+ACCESS_TOKEN
+            'http://localhost:8080/api/restaurant/'//+{restaurantId}
             );
-        const mediaData = await api_call_general.json();
-        if(mediaData){
-            this.setState({imagePostsData:mediaData.data});
-            console.log(mediaData.data[0].images.standard_resolution.url);
+        const restaurantIdData = await api_call_general.json();
+        if(restaurantIdData){
+            this.setState({restaurantIdDetails:restaurantData});
+            
         }
     }
+
     addItem(item){
 
         //first click isnt getting registered
