@@ -11,7 +11,8 @@ class CategoryGridList extends Component{
          super(props);
          this.state={
           categoryData:[],
-          itemData:[]
+          itemData:[],
+          
           
         }
     }
@@ -19,12 +20,15 @@ class CategoryGridList extends Component{
     
     componentWillMount(){
         this.setState({categoryData:this.props.restaurantIdDetails.categories,
-        itemData:this.props.restaurantIdDetails.categories.item_list
+        itemData:this.props.restaurantIdDetails.categories.item_list,
+        
         });
         
     }
   
- 
+  
+
+
    render(){ 
     
     let categoryData= this.state.categoryData;
@@ -48,7 +52,7 @@ class CategoryGridList extends Component{
                       <div className="flex-itemDetails"><span >{item.item_name}</span></div>
                       <div className="flex-itemDetails"><span><i className="fa fa-inr" aria-hidden="true"></i>{item.price}</span></div>
                        
-                      <div className="flex-itemDetails"><IconButton className="column"  aria-label="Add">
+                      <div className="flex-itemDetails"><IconButton className="column"  aria-label="Add" onClick={()=> this.props.addItem(item)}>
                       <AddIcon />
                       </IconButton></div>
                     </div>
