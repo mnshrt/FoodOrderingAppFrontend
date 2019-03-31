@@ -7,6 +7,8 @@ import RestaurantDetails2 from "./components/restaurantDetails/RestaurantDetails
 import Header from "../../common/header/Header";
 import "./Details.css";
 import CategoryGridList2 from "./components/categoryGridList/CategoryGridList2";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import PlaceOrderCard from "../../screens/checkout/components/PlaceOrderCard/PlaceOrderCard";
 
 // component
@@ -116,19 +118,30 @@ class Details2 extends Component {
     return (
       <div>
         <Header />
-        <div
+        <Card
+          elevation={0}
           style={{
-            position: "absolute",
-            width: "100%",
-            backgroundColor: "#e6e6e6"
+            backgroundColor: "#e6e6e6",
+            minHeight: "100%",
+            paddingBottom: "18%"
           }}
         >
-          <RestaurantDetails2
-            details={this.state.restaurantDetails}
-            address={this.state.addressDetails}
-            categories={this.state.categories}
-          />
-        </div>
+          <CardContent>
+            <div
+              style={{
+                position: "absolute",
+                width: "100%",
+                backgroundColor: "#e6e6e6"
+              }}
+            >
+              <RestaurantDetails2
+                details={this.state.restaurantDetails}
+                address={this.state.addressDetails}
+                categories={this.state.categories}
+              />
+            </div>
+          </CardContent>
+        </Card>
         <div className="flex-categoryCartContainer">
           <div className="categoryContainer" />
           <CategoryGridList2
