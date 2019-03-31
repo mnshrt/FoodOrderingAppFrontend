@@ -1,4 +1,5 @@
-import React from "react";
+// imports
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
@@ -21,14 +22,16 @@ const styles = theme => ({
   }
 });
 
-class Home extends React.Component {
+// class
+class Home2 extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      restaurantData: [],
-      reduceCols: 0
-    };
   }
+
+  state = {
+    restaurantData: [],
+    reduceCols: 0
+  };
 
   getData = async () => {
     const api_call_general = await fetch(
@@ -41,56 +44,22 @@ class Home extends React.Component {
 
     if (restaurantIdData) {
       this.setState({
-        restaurantData: [JSON.stringify(restaurantIdData)]
+        restaurantData: [restaurantIdData]
       });
     }
 
     console.log(this.state.restaurantData);
-
-    // const categoryList = [];
-    // const categoryList2 = [];
-
-    // console.log(restaurantIdData.categories);
-
-    // let j = 0;
-    // restaurantIdData.categories.forEach(element => {
-    //   if (j === restaurantIdData.categories.length - 1) {
-    //     categoryList.push(element.category_name);
-    //   } else {
-    //     categoryList.push(element.category_name + ", ");
-    //     j++;
-    //   }
-    //   categoryList2.push([element.category_name, element.id]);
-    // });
   };
 
   componentWillMount() {
     this.getData();
-    console.log(this.state.restaurantData);
-    window.addEventListener("resize", this.resize.bind(this));
-    this.resize();
+    // console.log(this.state.restaurantData);
+    // window.addEventListener("resize", this.resize.bind(this));
+    // this.resize();
   }
-
-  resize() {
-    let colsNumber = 0;
-    if (window.innerWidth <= 600) {
-      colsNumber = 2;
-    } else if (window.innerWidth <= 900) {
-      colsNumber = 3;
-    } else {
-      colsNumber = 4;
-    }
-    this.setState({ reduceCols: colsNumber });
-  }
-
-  openRestaurantDetails = restaurant => {
-    //route to the details js passing in the restaurant object
-    console.log(restaurant);
-  };
 
   render() {
-    let { classes } = this.props;
-    const restaurantData = this.state.restaurantData;
+    const { classes } = this.props;
     return (
       <div>
         <Header />
@@ -100,7 +69,8 @@ class Home extends React.Component {
             cols={this.state.reduceCols}
             className={classes.gridListMain}
           >
-            {this.state.restaurantData.restaurants.map(restaurant => (
+            {/* {this.state.restaurantData[0].restaurants}
+            {/* {this.state.restaurantData.restaurants.map(restaurant => (
               <GridListTile
                 className="restaurant-grid-item"
                 key={"grid" + restaurant.id}
@@ -108,7 +78,8 @@ class Home extends React.Component {
               >
                 <RestaurantCard currentRestaurant={restaurant} />
               </GridListTile>
-            ))}
+            ))} */}{" "}
+            */}
           </GridList>
         </div>
       </div>
@@ -116,4 +87,5 @@ class Home extends React.Component {
   }
 }
 
-export default withStyles(styles)(Home);
+// exports
+export default withStyles(styles)(Home2);

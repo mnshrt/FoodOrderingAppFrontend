@@ -1,42 +1,46 @@
+// imports
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import "./RestaurantDetails.css";
-import Icon from "@material-ui/core/Icon";
 
-class RestaurantDetails extends Component {
+// component
+class RestaurantDetails2 extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      restaurantDetails: {}
-    };
   }
+
+  state = {
+    details: this.props.details
+  };
+
   render() {
-    const details = this.props.restaurantDetails;
-    console.log(details);
+    const details = this.props.details;
+    const address = this.props.address;
+    const categories = this.props.categories;
     return (
       <div className="details">
-        <div className="flex-containerDetails">
+        <div className="flex-container-details">
           <div className="leftDetails">
             <img
               className="restaurantImage"
               src={details.photo_URL}
-              alt={details.restauant_name}
+              alt={details.restaurant_name}
             />
           </div>
           <div className="rightDetails">
-            <div>
+            <div style={{ marginBottom: "2%" }}>
               <Typography variant="h5" component="h5">
                 {details.restaurant_name}{" "}
               </Typography>
             </div>
-            <div>
-              <Typography variant="h5" component="h5">
-                {details.address.locality}{" "}
+            <div style={{ marginBottom: "2%" }}>
+              <Typography variant="h6" component="h6">
+                {address.locality}
               </Typography>
             </div>
-            <div>
-              <Typography variant="h6" component="h6">
-                {details.categories}{" "}
+            <div div style={{ marginBottom: "2%" }}>
+              <Typography variant="p" component="p">
+                {categories}
               </Typography>
             </div>
             <br />
@@ -76,4 +80,6 @@ class RestaurantDetails extends Component {
     );
   }
 }
-export default RestaurantDetails;
+
+// export
+export default RestaurantDetails2;

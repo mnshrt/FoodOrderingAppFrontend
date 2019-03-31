@@ -1,24 +1,24 @@
-.flex-categoryRatingContainer{
-    display:flex;
-    flex-direction: column;
+.flex-categoryRatingContainer {
+  display: flex;
+  flex-direction: column;
 }
-.categoryContainer{
-    margin-bottom: 20px;
-    flex:2;
-    height:30px;
+.categoryContainer {
+  margin-bottom: 30%;
+  flex: 2;
+  height: 30px;
 }
-.ratingPriceContainer{
-    flex:1;
-    
+.ratingPriceContainer {
+  flex: 1;
+  margin-left: 2%;
 }
 
-.flex-ratingPriceContainer{
-    display:flex;
-  }
-.ratingsContainer{
-    background-color: #E0E140;
-    margin-right:20px;
+.flex-ratingPriceContainer {
+  display: flex;
 }
-.ratingValues{
-    color:#FFFFFF;
+.ratingsContainer {
+  background-color: #e0e140;
+  margin-right: 20px;
+}
+.ratingValues {
+  color: #ffffff;
 }
