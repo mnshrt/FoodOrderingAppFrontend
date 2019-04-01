@@ -1,6 +1,9 @@
 // imports
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -40,45 +43,73 @@ class Home2 extends Component {
 
     const restaurantIdData = await api_call_general.json();
 
-    console.log(restaurantIdData);
+    const restaurantsArray = [];
+
+    restaurantIdData.restaurants.forEach(element => {
+      restaurantsArray.push(element);
+    });
+
+    console.log(restaurantsArray);
 
     if (restaurantIdData) {
       this.setState({
-        restaurantData: [restaurantIdData]
+        restaurantData: restaurantsArray
       });
     }
 
     console.log(this.state.restaurantData);
   };
 
+  openRestaurantDetails = restaurant => {
+    //route to the details js passing in the restaurant object
+  };
+
   componentWillMount() {
     this.getData();
-    // console.log(this.state.restaurantData);
-    // window.addEventListener("resize", this.resize.bind(this));
-    // this.resize();
+    console.log(this.state.restaurantData);
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize();
+  }
+
+  resize() {
+    let colsNumber = 0;
+    if (window.innerWidth <= 600) {
+      colsNumber = 2;
+    } else if (window.innerWidth <= 900) {
+      colsNumber = 3;
+    } else {
+      colsNumber = 4;
+    }
+    this.setState({ reduceCols: colsNumber });
   }
 
   render() {
     const { classes } = this.props;
     return (
       <div>
-        <Header />
         <div className={classes.root}>
           <GridList
             cellHeight={400}
             cols={this.state.reduceCols}
             className={classes.gridListMain}
           >
-            {/* {this.state.restaurantData[0].restaurants}
-            {/* {this.state.restaurantData.restaurants.map(restaurant => (
+            {this.state.restaurantData.map(restaurant => (
               <GridListTile
                 className="restaurant-grid-item"
                 key={"grid" + restaurant.id}
                 onClick={() => this.openRestaurantDetails(restaurant)}
               >
-                <RestaurantCard currentRestaurant={restaurant} />
+                <Link
+                  to={{
+                    pathname: "/details",
+                    state: { reastaurantId: restaurant.id }
+                  }}
+                  style={{ textDecoration: "none", marginRight: "1%" }}
+                >
+                  <RestaurantCard currentRestaurant={restaurant} />
+                </Link>
               </GridListTile>
-            ))} */}{" "}
+            ))}
             */}
           </GridList>
         </div>

@@ -23,75 +23,73 @@ class CategoryGridList2 extends Component {
     const items = this.props.items;
     return (
       <div>
-        {categories.map(element => (
-          <Fragment key={element}>
-            <Typography
-              variant="subtitle2"
-              style={{
-                textTransform: "uppercase",
-                paddingLeft: "15px",
-                fontSize: "12px"
-              }}
-            >
-              {element}
-            </Typography>
-            <Divider
-              style={{
-                paddingLeft: "15px",
-                paddingRight: "15px"
-              }}
-            />
-            <ul style={{ listStyle: "none" }}>
-              {items.map(item => {
-                return (
-                  <li id={item[1]}>
-                    <div className="flex-itemDetailsContainer">
-                      <div className="flex-itemDetails">
-                        {item[4] === "VEG" ? (
-                          <i
-                            className="fa fa-circle column"
-                            aria-hidden="true"
-                            style={{ fontSize: "20px", color: "#7DC280" }}
-                          />
-                        ) : (
-                          <i
-                            className="fa fa-circle column"
-                            aria-hidden="true"
-                            style={{ fontSize: "20px", color: "#BB3A3F" }}
-                          />
-                        )}
-                      </div>
-                      <div
-                        className="flex-itemDetails"
-                        style={{ fontSize: "13px" }}
-                      >
-                        <span>{item[1]}</span>
-                      </div>
-                      <div
-                        className="flex-itemDetails"
-                        style={{ fontSize: "15px" }}
-                      >
-                        <span>
-                          <i className="fa fa-inr" aria-hidden="true" />
-                          {item[3]}
-                        </span>
-                      </div>
-                      <div className="flex-itemDetails">
-                        <IconButton
-                          className="column"
-                          aria-label="Add"
-                          onClick={() => this.props.addItem(item)}
-                        >
-                          <AddIcon />
-                        </IconButton>
-                      </div>
+        <Fragment key={"Menu"}>
+          <Typography
+            variant="subtitle2"
+            style={{
+              textTransform: "uppercase",
+              paddingLeft: "15px",
+              fontSize: "12px"
+            }}
+          >
+            Menu
+          </Typography>
+          <Divider
+            style={{
+              paddingLeft: "15px",
+              paddingRight: "15px"
+            }}
+          />
+          <ul style={{ listStyle: "none" }}>
+            {items.map(item => {
+              return (
+                <li id={item[1]}>
+                  <div className="flex-itemDetailsContainer">
+                    <div className="flex-itemDetails">
+                      {item[4] === "VEG" ? (
+                        <i
+                          className="fa fa-circle column"
+                          aria-hidden="true"
+                          style={{ fontSize: "20px", color: "#7DC280" }}
+                        />
+                      ) : (
+                        <i
+                          className="fa fa-circle column"
+                          aria-hidden="true"
+                          style={{ fontSize: "20px", color: "#BB3A3F" }}
+                        />
+                      )}
                     </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </Fragment>
-        ))}
+                    <div
+                      className="flex-itemDetails"
+                      style={{ fontSize: "13px" }}
+                    >
+                      <span>{item[1]}</span>
+                    </div>
+                    <div
+                      className="flex-itemDetails"
+                      style={{ fontSize: "15px" }}
+                    >
+                      <span>
+                        <i className="fa fa-inr" aria-hidden="true" />
+                        {item[3]}
+                      </span>
+                    </div>
+                    <div className="flex-itemDetails">
+                      <IconButton
+                        className="column"
+                        aria-label="Add"
+                        onClick={() => this.props.addItem(item)}
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Fragment>
       </div>
     );
   }

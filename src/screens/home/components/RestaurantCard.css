@@ -3,20 +3,27 @@
   flex-direction: column;
 }
 .categoryContainer {
-  margin-bottom: 30%;
+  margin-bottom: 10%;
   flex: 2;
-  height: 30px;
+  height: 20px;
+  margin-top: 1%;
+  width: 100%;
 }
 .ratingPriceContainer {
+  position: relative;
   flex: 1;
-  margin-left: 2%;
+  margin-left: 1%;
+  padding-top: 10%;
+  padding-bottom: 17%;
+  bottom: 5%;
 }
 
 .flex-ratingPriceContainer {
   display: flex;
+  position: absolute;
 }
 .ratingsContainer {
-  background-color: #e0e140;
+  background-color: rgb(233, 203, 101);
   margin-right: 20px;
 }
 .ratingValues {

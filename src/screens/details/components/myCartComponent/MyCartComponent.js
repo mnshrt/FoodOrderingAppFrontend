@@ -1,12 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -66,17 +63,21 @@ class MyCartComponent extends React.Component {
     let itemCountOnCart = this.state.itemCountOnCart;
     let itemsOnCart = this.state.itemsOnCart;
 
+    console.log(itemsOnCart);
+
     let totalAmount = Object.keys(itemsOnCart).reduce((prevTotal, key) => {
       let itemCount = itemCountOnCart[key];
       return prevTotal + itemCount * itemsOnCart[key].price;
     }, 0);
     if (totalAmount !== "undefined") {
       this.setState({ totalAmount: totalAmount });
+      console.log(this.state.totalAmount);
       return totalAmount;
     } else {
       return this.state.totalAmount;
     }
   };
+
   render() {
     const { classes } = this.props;
     const items = this.props.items;
@@ -85,9 +86,9 @@ class MyCartComponent extends React.Component {
     return (
       <Card className={classes.card}>
         <CardContent onChange>
-          <span style={{ fontWeight: "bold" }}>
+          <span style={{ fontWeight: "bold", color: "black" }}>
             <Badge showZero color="primary" classes={{ badge: classes.badge }}>
-              <ShoppingCartIcon />
+              <ShoppingCartIcon style={{ color: "black" }} />
             </Badge>
             My Cart
           </span>
@@ -155,6 +156,15 @@ class MyCartComponent extends React.Component {
             />
             {total()}
           </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            style={{ marginBottom: "2%", marginTop: "5%" }}
+            onClick={this.handleClick}
+          >
+            Checkout
+          </Button>
         </CardContent>
       </Card>
     );

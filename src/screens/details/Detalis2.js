@@ -1,7 +1,8 @@
 // imports
 import React, { Component } from "react";
-import RestaurantDetails from "./components/restaurantDetails/RestaurantDetails";
-import CategoryGridList from "./components/categoryGridList/CategoryGridList";
+import { withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MyCartComponent from "./components/myCartComponent/MyCartComponent";
 import RestaurantDetails2 from "./components/restaurantDetails/RestaurantDetails2";
 import Header from "../../common/header/Header";
@@ -9,7 +10,7 @@ import "./Details.css";
 import CategoryGridList2 from "./components/categoryGridList/CategoryGridList2";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import PlaceOrderCard from "../../screens/checkout/components/PlaceOrderCard/PlaceOrderCard";
+import PlaceOrderCard from "../checkout/components/PlaceOrderCard/PlaceOrderCard";
 
 // component
 class Details2 extends Component {
@@ -24,11 +25,15 @@ class Details2 extends Component {
     categoriesArr: [],
     finalCategoryList: [],
     itemCountOnCart: 0,
-    itemCartList: []
+    itemCartList: [],
+    restaurantId: "",
+    restaurantName: "",
+    totalPrice: null
   };
 
   getItemData = async () => {
-    const apiString = "246165d2-a238-11e8-9077-720006ceb890";
+    console.log(this.props.location.state.reastaurantId);
+    const apiString = this.props.location.state.reastaurantId;
     const api_call_general = await fetch(
       "http://localhost:8080/api/restaurant/" + apiString
     );
@@ -59,7 +64,7 @@ class Details2 extends Component {
   };
 
   getData = async () => {
-    const apiString = "246165d2-a238-11e8-9077-720006ceb890";
+    const apiString = this.props.location.state.reastaurantId;
     const api_call_general = await fetch(
       "http://localhost:8080/api/restaurant/" + apiString
     );
@@ -87,10 +92,20 @@ class Details2 extends Component {
     this.setState({
       restaurantDetails: restaurantIdData,
       addressDetails: restaurantIdData.address,
-      categories: categoryList
+      categories: categoryList,
+      restaurantName: restaurantIdData.restaurant_name,
+      restaurantId: restaurantIdData.id
     });
     console.log(this.state.restaurantDetails);
+    console.log(this.state.restaurantName);
     console.log(this.state.categoriesArr);
+  };
+
+  getTotal = value => {
+    this.setState({
+      totalPrice: value
+    });
+    console.log(this.state.totalPrice);
   };
 
   addItem = item => {
@@ -117,7 +132,6 @@ class Details2 extends Component {
   render() {
     return (
       <div>
-        <Header />
         <Card
           elevation={0}
           style={{
@@ -152,10 +166,24 @@ class Details2 extends Component {
           />
         </div>
         <div className="cartContainer">
-          <MyCartComponent
-            addItem={this.addItem.bind(this)}
-            items={this.state.itemCartList}
-          />
+          <Link
+            to={{
+              pathname: "/checkout",
+              state: {
+                cart: this.state.itemCartList,
+                restaurant: this.state.restaurantName,
+                restaurantId: this.state.restaurantId,
+                totalPrice: this.state.totalPrice
+              }
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <MyCartComponent
+              addItem={this.addItem.bind(this)}
+              items={this.state.itemCartList}
+              getTotal={this.getTotal.bind(this)}
+            />
+          </Link>
         </div>
       </div>
     );
@@ -163,4 +191,4 @@ class Details2 extends Component {
 }
 
 // export
-export default Details2;
+export default withRouter(Details2);

@@ -6,13 +6,9 @@ import Modal from "@material-ui/core/Modal";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import InputIcon from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import FastFood from "@material-ui/icons/Fastfood";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -202,7 +198,23 @@ class Header extends Component {
         },
         body: JSON.stringify(data)
       }
-    ).then(response => console.log(response));
+    );
+
+    const responseData = await postAddress_api_call.json();
+
+    if (postAddress_api_call.status !== 201) {
+      const error = responseData.message;
+      this.setState({
+        contactErrorDisplay: "flex",
+        errorMessage: error
+      });
+    } else if (postAddress_api_call.status === 201) {
+      const success = "Signed up successfully! You can now proceed to login";
+      this.setState({
+        contactErrorDisplay: "flex",
+        errorMessage: success
+      });
+    }
   };
 
   handleLogin = async () => {
@@ -241,6 +253,9 @@ class Header extends Component {
       if (response === false) {
         console.log("error");
       } else {
+        this.setState({
+          isLoggedIn: true
+        });
         this.handleCloseModal();
       }
     }
@@ -248,7 +263,7 @@ class Header extends Component {
 
   handleLogout = () => {
     this.setState({ isLoggedIn: false, username: "" });
-    this.handleCloseProfileMenu();
+    window.sessionStorage.removeItem("access-token");
   };
 
   handleSignUp = () => {
@@ -257,6 +272,14 @@ class Header extends Component {
     const email = this.state.email;
     const password = this.state.signUpPassword;
     const contactNumber = this.state.signUpContactNumber;
+
+    this.setState({
+      firstNameErrorDisplay: "none",
+      emailErrorDisplay: "none",
+      passwordErrorDisplay: "none",
+      contactErrorDisplay: "none",
+      errorMessage: "Required"
+    });
 
     if (
       firstName === null &&
@@ -307,25 +330,27 @@ class Header extends Component {
               <Grid item>
                 <FastFood className="navbar-brand" />
               </Grid>
+              {!window.sessionStorage.getItem("access-token") ? (
+                <Grid item>
+                  <div className="search-bar-container">
+                    <Input
+                      classes={{
+                        underline: classes.underline
+                      }}
+                      className="search-bar"
+                      fullWidth={true}
+                      placeholder="Search by Restaurant Name"
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      }
+                    />
+                  </div>
+                </Grid>
+              ) : null}
               <Grid item>
-                <div className="search-bar-container">
-                  <Input
-                    classes={{
-                      underline: classes.underline
-                    }}
-                    className="search-bar"
-                    fullWidth={true}
-                    placeholder="Search by Restaurant Name"
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    }
-                  />
-                </div>
-              </Grid>
-              <Grid item>
-                {!this.state.isLoggedIn ? (
+                {!window.sessionStorage.getItem("access-token") ? (
                   <div>
                     <Button variant="contained" onClick={this.handleOpenModal}>
                       <AccountCircle style={{ marginRight: "5px" }} />

@@ -57,8 +57,9 @@ class Checkout extends Component {
     addressFormData: "",
     paymentData: "",
     addressId: "",
-    accessToken:
-      "eyJraWQiOiIyMjhhNjFkZS03ZDQ2LTRmNmEtOWE2My1lZDk5MzcxZTA4ZTMiLCJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJhdWQiOiJhY2VmNWY3Yi1lM2RkLTQwOGUtOGI3My1mY2UzM2M2OWQxMjQiLCJpc3MiOiJodHRwczovL0Zvb2RPcmRlcmluZ0FwcC5pbyIsImV4cCI6MTU1NDAwOSwiaWF0IjoxNTUzOTgwfQ.P76lFxqhK0zOzC3FJmYVk-hsIs46x7da1YfpuIW32WGQMUleqxAxnCQVJol3F--klewgRK95g_tI8PUsWUmUNA"
+    accessToken: "",
+    total: 0,
+    snackboxMessage: ""
   };
 
   handleNext = () => {
@@ -125,7 +126,8 @@ class Checkout extends Component {
         "http://localhost:8080/api/address/customer",
         {
           headers: {
-            authorization: "Bearer " + this.state.accessToken,
+            authorization:
+              "Bearer " + window.sessionStorage.getItem("access-token"),
             "content-type": "application/json;charset=UTF-8"
           }
         }
@@ -192,20 +194,76 @@ class Checkout extends Component {
 
   // Method to make Http POST requests asynchronously
   postData = async data => {
+    const paymentData = this.state.paymentData;
+    const addressId = this.state.addressId;
+    const restaurantId = this.props.location.state.restaurantId;
+    const itemData = this.props.location.state.cart;
+
+    console.log(itemData);
+
+    let totalPrice = 0;
+
+    itemData.forEach(element => {
+      totalPrice += element[0][3];
+    });
+
+    const itemQuantities = [];
+
+    itemData.forEach(element => {
+      const finalObj = {
+        item_id: element[0][2],
+        price: element[0][3],
+        quantity: element[1]
+      };
+      itemQuantities.push(finalObj);
+    });
+
+    console.log(paymentData);
+    console.log(restaurantId);
+
+    // construct final request
+    const finalResponse = {
+      address_id: addressId,
+      bill: totalPrice,
+      coupon_id: "",
+      discount: 0,
+      item_quantities: itemQuantities,
+      payment_id: paymentData,
+      restaurant_id: restaurantId
+    };
+
     const postAddress_api_call = await fetch(
-      "http://localhost:8080/api/address/customer",
+      "http://localhost:8080/api/order",
       {
         method: "POST",
         headers: {
-          authorization: "Bearer " + this.state.accessToken,
+          authorization:
+            "Bearer " + window.sessionStorage.getItem("access-token"),
           "content-type": "application/json;charset=UTF-8"
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(finalResponse)
       }
-    ).then(response => console.log(response));
+    );
+
+    console.log(postAddress_api_call);
+
+    if (postAddress_api_call.status === 201) {
+      this.setState({
+        snackboxMessage: "Order placed successfully!"
+      });
+    } else if (postAddress_api_call.status !== 201) {
+      this.setState({
+        snackboxMessage: "‘Unable to place your order! Please try again!’"
+      });
+    }
   };
 
   componentWillMount() {
+    const sessionAccessToken = window.sessionStorage.getItem("access-token");
+    this.setState({
+      accessToken: sessionAccessToken
+    });
+    console.log(this.props.location.state.restaurant);
     this.getData();
   }
 
@@ -238,10 +296,15 @@ class Checkout extends Component {
     const { activeStep } = this.state;
     return (
       <div>
-        <Header />
         <div style={{ display: "inline-flex" }}>
-          <div className="order-summary">
-            <PlaceOrderCard className="order-summary" />
+          <div className="order-summary" onClick={this.postData}>
+            <PlaceOrderCard
+              className="order-summary"
+              cartData={this.props.location.state.cart}
+              restaurantName={this.props.location.state.restaurant}
+              totalPrice={this.props.location.state.totalPrice}
+              snackBoxMessage={this.state.snackboxMessage}
+            />
           </div>
           <div className={classes.root}>
             <Stepper activeStep={activeStep} orientation="vertical">

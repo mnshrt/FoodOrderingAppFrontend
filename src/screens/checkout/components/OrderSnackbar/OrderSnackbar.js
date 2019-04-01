@@ -33,6 +33,7 @@ class OrderSnackbar extends Component {
 
   render() {
     const { classes } = this.props;
+    const snackBoxMessage = this.props.snackBoxMessage;
     return (
       <div>
         <Button
@@ -55,11 +56,7 @@ class OrderSnackbar extends Component {
             ContentProps={{
               "aria-describedby": "message-id"
             }}
-            message={
-              <span id="message-id">
-                Order placed successfully! Your order ID is #12345
-              </span>
-            }
+            message={<span id="message-id">{this.props.snackBoxMessage}</span>}
             action={[
               <IconButton
                 key="close"
